@@ -3,32 +3,45 @@ using UnityEngine;
 
 public class MeshCutter
 {
-    public GameObject Slice(GameObject cutter, GameObject objectToCut)
+    //Returns extra parts and outs platform left
+    public GameObject[] Slice(GameObject cutter, GameObject objectToCut, out GameObject body)
     {
         var material = objectToCut.GetComponent<MeshRenderer>().material;
-        var positionToSliceOn = GetPositionToSliceOn(cutter, objectToCut);
-        var slicedHull = objectToCut.Slice(positionToSliceOn, objectToCut.transform.right, material);
+        var positionsToSliceOn = GetPositionToSliceOn(cutter, objectToCut);
+        
+        var rightHull = objectToCut.Slice(positionsToSliceOn[0], objectToCut.transform.right, material);
+        var rightObject = rightHull.CreateUpperHull(objectToCut, material);
+        var rightBody = rightHull.CreateLowerHull(objectToCut, material);
+        
+        var leftHull = rightBody.Slice(positionsToSliceOn[1], rightBody.transform.right, material);
+        var leftObject = leftHull.CreateLowerHull(rightBody, material);
+        var leftBody = leftHull.CreateUpperHull(rightBody, material);
+        
+        Object.Destroy(rightBody);
+        objectToCut.SetActive(false);
 
-        var rightObject = slicedHull.CreateUpperHull(objectToCut, material);
-        var leftObject = slicedHull.CreateLowerHull(objectToCut, material);
-        Object.Destroy(objectToCut);
-
-        var surplus = objectToCut.transform.position.x > cutter.transform.position.x
-            ? rightObject
-            : leftObject;
-
-        return surplus;
+        body = leftBody;
+        return new []{rightObject, leftObject};
     }
 
-    private Vector3 GetPositionToSliceOn(GameObject cutter, GameObject objectToCut)
+    private Vector3[] GetPositionToSliceOn(GameObject cutter, GameObject objectToCut)
     {
-        var direction = objectToCut.transform.position.x > cutter.transform.position.x ? 1f : -1f;
-        var position = cutter.transform.position;
-        position += Vector3.right
-                    * (cutter.GetComponent<MeshFilter>().mesh.bounds.extents.x *
-                       cutter.transform.localScale.x * direction);
-        position.z = objectToCut.transform.position.z;
+        var cutterPosition = cutter.transform.position;
+        var positions = new[]
+        {
+            cutterPosition + Vector3.right
+            * (cutter.GetComponent<MeshFilter>().mesh.bounds.extents.x *
+               cutter.transform.localScale.x),
+            cutterPosition + Vector3.right
+            * (cutter.GetComponent<MeshFilter>().mesh.bounds.extents.x *
+               cutter.transform.localScale.x * -1f)
+        };
 
-        return position;
+        positions[0].z = positions[1].z = objectToCut.transform.position.z;
+
+        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.transform.position = positions[0];
+
+        return positions;
     }
 }
