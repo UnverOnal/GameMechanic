@@ -2,21 +2,20 @@ using Platform;
 using VContainer;
 using VContainer.Unity;
 
-public class GameManager : IInitializable, ITickable
+public class GameManager : ITickable
 {
+    private readonly InputManager _inputManager;
     private PlatformManager _platformManager;
     
     [Inject]
-    public GameManager(PlatformManager platformManager)
+    public GameManager(PlatformManager platformManager, InputManager inputManager)
     {
         _platformManager = platformManager;
-    }
-    
-    public void Initialize()
-    {
+        _inputManager = inputManager;
     }
 
     public void Tick()
     {
+        _inputManager.Update();
     }
 }

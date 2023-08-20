@@ -5,12 +5,17 @@ namespace Platform
 {
     public class PlatformMover
     {
+        public GameObject CurrentStack { get; private set; }
+        public GameObject PreviousStack { get; private set; }
+        
         private GameObject[] _stacks;
 
         private int _activePlatformIndex;
         
         private float _direction = 1f;
-        private float _distance;
+        private readonly float _distance;
+
+        private Tween _moveTween;
         
         public PlatformMover(GameObject[] stacks, int activePlatformIndex, float distance)
         {
@@ -18,6 +23,7 @@ namespace Platform
             _activePlatformIndex = activePlatformIndex;
             _distance = distance;
             
+            SetPrevious(stacks[_activePlatformIndex]);
             ActivateNext();
         }
 
@@ -25,11 +31,21 @@ namespace Platform
         {
             _activePlatformIndex++;
             
-            var stack = _stacks[_activePlatformIndex];
-            Place(stack);
-            StartMoving(stack);
+            CurrentStack = _stacks[_activePlatformIndex];
+            Place(CurrentStack);
+            StartMoving(CurrentStack);
             
             _direction *= -1f;
+        }
+
+        public void SetPrevious(GameObject previous)
+        {
+            PreviousStack = previous;
+        }
+
+        public void StopMoving()
+        {
+            _moveTween.Kill();
         }
 
         private void Place(GameObject stack)
@@ -43,9 +59,7 @@ namespace Platform
 
         private void StartMoving(GameObject stack)
         {
-            stack.transform.DOMoveX(_distance * _direction * -1f, 1f)
-                .SetEase(Ease.Linear)
-                .SetLoops( -1, LoopType.Yoyo);
+            _moveTween = stack.transform.DOMoveX(_distance * _direction * -1f, 10f);
         }
     }
 }

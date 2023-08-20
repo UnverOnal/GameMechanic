@@ -12,10 +12,11 @@ namespace DI
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterEntryPoint<GameManager>();
-            
+
             builder.RegisterComponent(sceneResources);
 
             builder.Register<PlatformManager>(Lifetime.Singleton);
+            builder.Register<InputManager>(Lifetime.Singleton);
         }
     }
 }

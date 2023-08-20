@@ -4223,8 +4223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc67529a5f3d3d540a83b6db632fbc92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previousObject: {fileID: 0}
-  objectToCut: {fileID: 0}
+  previousObject: {fileID: 1361399597}
+  objectToCut: {fileID: 1625946092}
 --- !u!4 &1110878509
 Transform:
   m_ObjectHideFlags: 0
