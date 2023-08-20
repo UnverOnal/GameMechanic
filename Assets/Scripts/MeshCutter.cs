@@ -8,19 +8,24 @@ public class MeshCutter
     {
         var material = objectToCut.GetComponent<MeshRenderer>().material;
         var positionsToSliceOn = GetPositionToSliceOn(cutter, objectToCut);
+        body = objectToCut;
         
-        var rightHull = objectToCut.Slice(positionsToSliceOn[0], objectToCut.transform.right, material);
-        var rightObject = rightHull.CreateUpperHull(objectToCut, material);
-        var rightBody = rightHull.CreateLowerHull(objectToCut, material);
+        //Slice right part if exceeds the border 
+        var rightHull = body.Slice(positionsToSliceOn[0], body.transform.right, material);
+        var rightObject = rightHull?.CreateUpperHull(body, material);
+        var rightBody = rightHull?.CreateLowerHull(body, material);
+
+        body = rightBody ? rightBody : objectToCut;
         
-        var leftHull = rightBody.Slice(positionsToSliceOn[1], rightBody.transform.right, material);
-        var leftObject = leftHull.CreateLowerHull(rightBody, material);
-        var leftBody = leftHull.CreateUpperHull(rightBody, material);
+        //Slice left part if exceeds the border 
+        var leftHull = body.Slice(positionsToSliceOn[1], body.transform.right, material);
+        var leftObject = leftHull?.CreateLowerHull(body, material);
+        body = leftHull?.CreateUpperHull(body, material);
         
-        Object.Destroy(rightBody);
+        if(body)
+            Object.Destroy(rightBody);
         objectToCut.SetActive(false);
 
-        body = leftBody;
         return new []{rightObject, leftObject};
     }
 
@@ -38,9 +43,6 @@ public class MeshCutter
         };
 
         positions[0].z = positions[1].z = objectToCut.transform.position.z;
-
-        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = positions[0];
 
         return positions;
     }
