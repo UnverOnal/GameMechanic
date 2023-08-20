@@ -5,8 +5,8 @@ namespace Platform
 {
     public class PlatformMover
     {
+        public GameObject NextStack { get; private set; }
         public GameObject CurrentStack { get; private set; }
-        public GameObject PreviousStack { get; private set; }
         
         private GameObject[] _stacks;
 
@@ -31,16 +31,16 @@ namespace Platform
         {
             _activePlatformIndex++;
             
-            CurrentStack = _stacks[_activePlatformIndex];
-            Place(CurrentStack);
-            StartMoving(CurrentStack);
+            NextStack = _stacks[_activePlatformIndex];
+            Place(NextStack);
+            StartMoving(NextStack);
             
             _direction *= -1f;
         }
 
         public void SetPrevious(GameObject previous)
         {
-            PreviousStack = previous;
+            CurrentStack = previous;
         }
 
         public void StopMoving()

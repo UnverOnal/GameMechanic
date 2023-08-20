@@ -1,4 +1,5 @@
 using Platform;
+using Player;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -17,6 +18,7 @@ namespace DI
 
             builder.Register<PlatformManager>(Lifetime.Singleton);
             builder.Register<InputManager>(Lifetime.Singleton);
+            builder.Register<PlayerManager>(Lifetime.Singleton);
         }
     }
 }

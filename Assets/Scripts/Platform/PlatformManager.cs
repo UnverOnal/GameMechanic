@@ -35,12 +35,13 @@ namespace Platform
 
         private void SlicePlatform()    
         {
-            var currentStack = _platformMover.CurrentStack;
-            var previousStack = _platformMover.PreviousStack;
+            var currentStack = _platformMover.NextStack;
+            var previousStack = _platformMover.CurrentStack;
             var extras = _meshCutter.Slice(previousStack, currentStack, out var platformLeft);
             for (int i = 0; i < extras.Length; i++)
                 extras[i]?.AddComponent<Rigidbody>();
 
+            platformLeft.AddComponent<BoxCollider>();
             _platformMover.SetPrevious(platformLeft);
         }
 
