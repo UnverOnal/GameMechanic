@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -36,6 +37,7 @@ namespace Platform
             if (_activePlatformIndex >= _stacks.Length ) return;
             NextStack = _stacks[_activePlatformIndex];
             Place(NextStack);
+            SetScale();
             StartMoving(NextStack);
             
             _direction *= -1f;
@@ -46,9 +48,16 @@ namespace Platform
             CurrentStack = previous;
         }
 
-        public void StopMoving()
+        public void StopMoving(out bool isCloseEnough)
         {
             _moveTween.Kill();
+            isCloseEnough = IsCloseEnough(CurrentStack.transform, NextStack.transform);
+            if (isCloseEnough)
+            {
+                var position = NextStack.transform.position;
+                position.x = CurrentStack.transform.position.x;
+                NextStack.transform.position = position;
+            }
         }
 
         private void Place(GameObject stack)
@@ -63,6 +72,20 @@ namespace Platform
         private void StartMoving(GameObject stack)
         {
             _moveTween = stack.transform.DOMoveX(_distance * _direction * -1f, _duration);
+        }
+
+        private void SetScale()
+        {
+            var x = CurrentStack.GetComponent<BoxCollider>().size.x;
+            var scale = CurrentStack.transform.localScale;
+            scale.x *= x;
+            NextStack.transform.localScale = scale;
+        }
+        
+        private bool IsCloseEnough(Transform current, Transform next)
+        {
+            var canCut = Math.Abs(current.position.x - next.position.x) < 5f;
+            return canCut;
         }
     }
 }

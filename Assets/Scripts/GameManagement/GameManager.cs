@@ -1,5 +1,5 @@
+using Audio;
 using Camera;
-using Platform;
 using Player;
 using Result;
 using VContainer;
@@ -11,14 +11,16 @@ public class GameManager : ITickable
     private readonly PlayerManager _playerManager;
     private readonly ResultManager _resultManager;
     private readonly CameraManager _cameraManager;
+    private readonly AudioManager _audioManager;
     
     [Inject]
-    public GameManager(InputManager inputManager, PlayerManager playerManager, ResultManager resultManager, CameraManager cameraManager)
+    public GameManager(InputManager inputManager, PlayerManager playerManager, ResultManager resultManager, CameraManager cameraManager, AudioManager audioManager)
     {
         _inputManager = inputManager;
         _playerManager = playerManager;
         _resultManager = resultManager;
         _cameraManager = cameraManager;
+        _audioManager = audioManager;
 
         NextScene();
     }
@@ -31,7 +33,7 @@ public class GameManager : ITickable
 
     private void NextScene()
     {
-        _resultManager.Initialize(_playerManager.Tag);
+        _resultManager.Initialize();
         _playerManager.Initialize();
         _cameraManager.Initialize();
     }

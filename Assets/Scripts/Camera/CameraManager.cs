@@ -1,13 +1,14 @@
 using System.Threading;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
+using GameResource;
 using Result;
 using UnityEngine;
 using VContainer;
 
 namespace Camera
 {
-    public class CameraManager
+    public class CameraManager : IReloadable
     {
         private readonly ResultManager _resultManager;
         

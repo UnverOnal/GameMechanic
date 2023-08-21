@@ -1,3 +1,4 @@
+using GameResource;
 using Platform;
 using Result;
 using ScriptableObject;
@@ -6,7 +7,7 @@ using VContainer;
 
 namespace Player
 {
-    public class PlayerManager
+    public class PlayerManager : IReloadable
     {
         public Vector3 Position => _player.transform.position;
         
@@ -41,6 +42,11 @@ namespace Player
         {
             _resultManager.SubscribeToFail(OnFail);
             _resultManager.SubscribeToSuccess(OnSuccess);
+        }
+
+        public void Reset()
+        {
+            throw new System.NotImplementedException();
         }
 
         public void Update()

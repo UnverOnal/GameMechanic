@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using GameResource;
 using Platform;
 using UnityEngine;
 using VContainer;
 
 namespace Result
 {
-    public class ResultManager
+    public class ResultManager : IReloadable
     {
         private readonly GameObject _finish;
         private readonly GameObject _fail;
@@ -34,10 +35,10 @@ namespace Result
             _uiDisplayer = new ResultUiDisplayer(sceneResources.resultUiResources);
         }
 
-        public void Initialize(string playerTag)
+        public void Initialize()
         {
-            _failChecker.Initialize(playerTag);
-            _finishChecker.Initialize(playerTag);
+            _failChecker.Initialize("player");
+            _finishChecker.Initialize("player");
             
             SetFailCollider(_platformManager.CurrentPlatformCenter);
             

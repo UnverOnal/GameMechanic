@@ -1,14 +1,19 @@
 using Camera;
 using UnityEngine;
 
-public class SceneResources : MonoBehaviour
+namespace GameResource
 {
-    public GameObject finish;
-    public GameObject fail;
-    public ResultUiResources resultUiResources;
+    public class SceneResources : MonoBehaviour
+    {
+        public GameObject finish;
+        public GameObject fail;
+        public ResultUiResources resultUiResources;
     
-    public GameObject player;
-    public GameObject[] stacks;
+        public GameObject player;
+        public GameObject[] stacks;
 
-    public CameraResources cameraResources;
+        public CameraResources cameraResources;
+
+        public GameObject audioHolder;
+    }
 }

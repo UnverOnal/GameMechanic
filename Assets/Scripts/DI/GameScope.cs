@@ -1,4 +1,6 @@
+using Audio;
 using Camera;
+using GameResource;
 using Platform;
 using Player;
 using Result;
@@ -28,6 +30,7 @@ namespace DI
             builder.Register<PlayerManager>(Lifetime.Singleton);
             builder.Register<ResultManager>(Lifetime.Singleton);
             builder.Register<CameraManager>(Lifetime.Singleton);
+            builder.Register<AudioManager>(Lifetime.Singleton);
         }
     }
 }
