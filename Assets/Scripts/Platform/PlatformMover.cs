@@ -11,17 +11,19 @@ namespace Platform
         private GameObject[] _stacks;
 
         private int _activePlatformIndex;
-        
-        private float _direction = 1f;
+
+        private readonly float _duration;
         private readonly float _distance;
+        private float _direction = 1f;
 
         private Tween _moveTween;
         
-        public PlatformMover(GameObject[] stacks, int activePlatformIndex, float distance)
+        public PlatformMover(GameObject[] stacks, int activePlatformIndex, float distance, float duration)
         {
             _stacks = stacks;
             _activePlatformIndex = activePlatformIndex;
             _distance = distance;
+            _duration = duration;
             
             SetPrevious(stacks[_activePlatformIndex]);
             ActivateNext();
@@ -59,7 +61,7 @@ namespace Platform
 
         private void StartMoving(GameObject stack)
         {
-            _moveTween = stack.transform.DOMoveX(_distance * _direction * -1f, 10f);
+            _moveTween = stack.transform.DOMoveX(_distance * _direction * -1f, _duration);
         }
     }
 }

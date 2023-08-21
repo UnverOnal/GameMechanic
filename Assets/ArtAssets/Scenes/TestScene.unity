@@ -7790,6 +7790,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   sceneResources: {fileID: 1277924669}
+  playerData: {fileID: 11400000, guid: 4b77bbd406f9eee4fb5eacab3e6fa888, type: 2}
 --- !u!4 &1644912593
 Transform:
   m_ObjectHideFlags: 0

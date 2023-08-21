@@ -1,5 +1,6 @@
 using EzySlice;
 using UnityEngine;
+using Util;
 
 public class MeshCutter
 {
@@ -11,7 +12,7 @@ public class MeshCutter
         body = objectToCut;
         
         //Slice right part if it exceeds the border 
-        var rightHull = body.Slice(positionsToSliceOn[0], body.transform.right, material);
+        var rightHull = body.Slice(positionsToSliceOn[0], Vector3.right, material);
         var rightObject = rightHull?.CreateUpperHull(body, material);
         var rightBody = rightHull?.CreateLowerHull(body, material);
 
@@ -33,7 +34,7 @@ public class MeshCutter
 
     private Vector3[] GetPositionsToSliceOn(GameObject cutter, GameObject objectToCut)
     {
-        var cutterPosition = cutter.transform.position;
+        var cutterPosition = cutter.GetCenter();
         var positions = new[]
         {
             cutterPosition + Vector3.right

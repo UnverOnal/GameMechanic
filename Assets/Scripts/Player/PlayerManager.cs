@@ -1,4 +1,5 @@
 using Platform;
+using ScriptableObject;
 using UnityEngine;
 using VContainer;
 
@@ -11,13 +12,17 @@ namespace Player
         private bool _canMove = true;
 
         private readonly PlatformManager _platformManager;
+        
+        private readonly PlayerData _playerData;
 
         [Inject]
-        public PlayerManager(SceneResources sceneResources, PlatformManager platformManager)
+        public PlayerManager(SceneResources sceneResources, PlatformManager platformManager, PlayerData playerData)
         {
             _player = sceneResources.player;
 
             _platformManager = platformManager;
+            
+            _playerData = playerData;
         }
 
         public void Update()
@@ -29,9 +34,9 @@ namespace Player
 
         private void Move()
         {
-            var currentStackPosition = _platformManager.CurrentStack.transform.position;
-            _player.transform.MoveForward(currentStackPosition,1f);
-            _player.transform.Look(currentStackPosition, 3f);
+            var currentStackPosition = _platformManager.CurrentPlatformCenter;
+            _player.transform.MoveForward(currentStackPosition,_playerData.playerSpeed);
+            _player.transform.Look(currentStackPosition, _playerData.lookRotationFactor);
         }
     }
 }
