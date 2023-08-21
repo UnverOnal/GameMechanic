@@ -16,16 +16,20 @@ namespace Platform
         private readonly InputManager _inputManager;
         private readonly MeshCutter _meshCutter;
 
+        private readonly ObjectDestroyer _objectDestroyer;
+
         [Inject]
-        public PlatformManager(SceneResources sceneResources, InputManager inputManager, PlayerData playerData)
+        public PlatformManager(SceneResources sceneResources, InputManager inputManager, PlatformData platformData)
         {
             _stacks = sceneResources.stacks;
             
             _inputManager = inputManager;
-            _platformMover = new PlatformMover(_stacks, 1, playerData.startingPlatformDistance, playerData.platformMovementDuration);
+            _platformMover = new PlatformMover(_stacks, 1, platformData.startingPlatformDistance, platformData.platformMovementDuration);
             _meshCutter = new MeshCutter();
 
             CurrentPlatformCenter = _platformMover.CurrentStack.GetCenter();
+
+            _objectDestroyer = new ObjectDestroyer(platformData.maximumTrashSize, platformData.delayForDestroyExtraParts);
 
             _inputManager.OnTap += OnTap;
         }
@@ -44,7 +48,14 @@ namespace Platform
             var previousStack = _platformMover.CurrentStack;
             var extras = _meshCutter.Slice(previousStack, currentStack, out currentPlatform);
             for (int i = 0; i < extras.Length; i++)
-                extras[i]?.AddComponent<Rigidbody>();
+            {
+                var extra = extras[i];
+                
+                if(!extra) continue;
+                
+                extra.AddComponent<Rigidbody>();
+                _objectDestroyer.Trash(extra);
+            }
 
             currentPlatform.AddComponent<BoxCollider>();
 

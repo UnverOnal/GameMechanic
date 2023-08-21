@@ -7,7 +7,5 @@ namespace ScriptableObject
     {
         public float playerSpeed = 1f;
         public float lookRotationFactor = 3f;
-        public float platformMovementDuration = 10f;
-        public float startingPlatformDistance = 10f;
     }
 }

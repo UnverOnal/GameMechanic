@@ -7893,6 +7893,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   sceneResources: {fileID: 1277924669}
   playerData: {fileID: 11400000, guid: 4b77bbd406f9eee4fb5eacab3e6fa888, type: 2}
+  platformData: {fileID: 11400000, guid: 0f1510e09f9e18748a4a40dac15062e4, type: 2}
 --- !u!4 &1644912593
 Transform:
   m_ObjectHideFlags: 0

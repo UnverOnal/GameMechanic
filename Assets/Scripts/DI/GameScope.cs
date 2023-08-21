@@ -11,6 +11,7 @@ namespace DI
     {
         [SerializeField] private SceneResources sceneResources;
         [SerializeField] private PlayerData playerData;
+        [SerializeField] private PlatformData platformData;
         
         protected override void Configure(IContainerBuilder builder)
         {
@@ -18,6 +19,7 @@ namespace DI
 
             builder.RegisterComponent(sceneResources);
             builder.RegisterInstance(playerData);
+            builder.RegisterInstance(platformData);
 
             builder.Register<PlatformManager>(Lifetime.Singleton);
             builder.Register<InputManager>(Lifetime.Singleton);
