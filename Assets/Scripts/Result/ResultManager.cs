@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using GameResource;
 using Platform;
 using UnityEngine;
@@ -11,10 +10,10 @@ namespace Result
     {
         private readonly GameObject _finish;
         private readonly GameObject _fail;
-        
+
         private readonly ResultChecker _failChecker;
         private readonly ResultChecker _finishChecker;
-        
+
         private readonly Collider _failCollider;
 
         private readonly ResultUiDisplayer _uiDisplayer;
@@ -29,9 +28,9 @@ namespace Result
             _finish = sceneResources.finish;
             _finishChecker = sceneResources.finish.GetComponentInChildren<ResultChecker>();
             _finishChecker.Initialize("Player");
-            
+
             SetFailCollider(platformManager.CurrentPlatformCenter);
-            
+
             _uiDisplayer = new ResultUiDisplayer(sceneResources.resultUiResources);
             SubscribeToFail(_uiDisplayer.ShowFailPage);
             SubscribeToSuccess(_uiDisplayer.ShowSuccessPage);
@@ -40,8 +39,8 @@ namespace Result
         public void SubscribeToFail(Action action)
         {
             _failChecker.OnCollide += action;
-        }        
-        
+        }
+
         public void UnSubscribeFromFail(Action action)
         {
             _failChecker.OnCollide -= action;
@@ -51,7 +50,7 @@ namespace Result
         {
             _finishChecker.OnCollide += action;
         }
-        
+
         public void UnSubscribeFromSuccess(Action action)
         {
             _finishChecker.OnCollide -= action;
@@ -59,7 +58,7 @@ namespace Result
 
         private void SetFailCollider(Vector3 playerStartPosition)
         {
-            var middlePoint = (_finish.transform.position - playerStartPosition)/2f;
+            var middlePoint = (_finish.transform.position - playerStartPosition) / 2f;
             middlePoint.y = _fail.transform.position.y;
             _fail.transform.position = middlePoint;
 
