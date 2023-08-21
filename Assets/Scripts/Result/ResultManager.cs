@@ -19,7 +19,6 @@ namespace Result
 
         private readonly ResultUiDisplayer _uiDisplayer;
 
-
         [Inject]
         public ResultManager(SceneResources sceneResources, PlatformManager platformManager)
         {

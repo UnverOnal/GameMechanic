@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using Util;
 
 namespace Platform
 {
@@ -11,20 +12,21 @@ namespace Platform
         
         private GameObject[] _stacks;
 
-        private int _activePlatformIndex;
+        private int _activePlatformIndex = 1;
 
         private readonly float _duration;
         private readonly float _distance;
+        private readonly float _perfectTapTolerance;
         private float _direction = 1f;
 
         private Tween _moveTween;
         
-        public PlatformMover(GameObject[] stacks, int activePlatformIndex, float distance, float duration)
+        public PlatformMover(GameObject[] stacks, float distance, float duration, float perfectTapTolerance)
         {
             _stacks = stacks;
-            _activePlatformIndex = activePlatformIndex;
             _distance = distance;
             _duration = duration;
+            _perfectTapTolerance = perfectTapTolerance;
             
             SetPrevious(stacks[_activePlatformIndex]);
             ActivateNext();
@@ -55,7 +57,7 @@ namespace Platform
             if (isCloseEnough)
             {
                 var position = NextStack.transform.position;
-                position.x = CurrentStack.transform.position.x;
+                position.x = CurrentStack.GetCenter().x;
                 NextStack.transform.position = position;
             }
         }
@@ -84,8 +86,8 @@ namespace Platform
         
         private bool IsCloseEnough(Transform current, Transform next)
         {
-            var canCut = Math.Abs(current.position.x - next.position.x) < 0.25f;
-            return false;
+            var canCut = Math.Abs(current.position.x - next.position.x) < _perfectTapTolerance;
+            return canCut;
         }
     }
 }
