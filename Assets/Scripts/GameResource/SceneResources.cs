@@ -1,3 +1,4 @@
+using Camera;
 using UnityEngine;
 
 public class SceneResources : MonoBehaviour
@@ -8,4 +9,6 @@ public class SceneResources : MonoBehaviour
     
     public GameObject player;
     public GameObject[] stacks;
+
+    public CameraResources cameraResources;
 }

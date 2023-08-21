@@ -1,3 +1,4 @@
+using Camera;
 using Platform;
 using Player;
 using Result;
@@ -26,6 +27,7 @@ namespace DI
             builder.Register<InputManager>(Lifetime.Singleton);
             builder.Register<PlayerManager>(Lifetime.Singleton);
             builder.Register<ResultManager>(Lifetime.Singleton);
+            builder.Register<CameraManager>(Lifetime.Singleton);
         }
     }
 }

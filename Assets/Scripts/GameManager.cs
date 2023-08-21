@@ -1,3 +1,4 @@
+using Camera;
 using Platform;
 using Player;
 using Result;
@@ -8,17 +9,16 @@ public class GameManager : ITickable
 {
     private readonly InputManager _inputManager;
     private readonly PlayerManager _playerManager;
-    private PlatformManager _platformManager;
-    private ResultManager _resultManager;
+    private readonly ResultManager _resultManager;
+    private readonly CameraManager _cameraManager;
     
     [Inject]
-    public GameManager(PlatformManager platformManager, InputManager inputManager, PlayerManager playerManager, ResultManager resultManager)
+    public GameManager(InputManager inputManager, PlayerManager playerManager, ResultManager resultManager, CameraManager cameraManager)
     {
-        _platformManager = platformManager;
         _inputManager = inputManager;
         _playerManager = playerManager;
-        
         _resultManager = resultManager;
+        _cameraManager = cameraManager;
 
         NextScene();
     }
@@ -33,5 +33,6 @@ public class GameManager : ITickable
     {
         _resultManager.Initialize(_playerManager.Tag);
         _playerManager.Initialize();
+        _cameraManager.Initialize();
     }
 }
