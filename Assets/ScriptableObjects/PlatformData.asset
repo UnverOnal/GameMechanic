@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc47dbb08aead94cae46296b28e2316, type: 3}
   m_Name: PlatformData
   m_EditorClassIdentifier: 
-  platformMovementDuration: 10
+  platformMovementDuration: 9.25
   startingPlatformDistance: 10
   delayForDestroyExtraParts: 2.5
   maximumTrashSize: 10

@@ -1,4 +1,5 @@
 using Platform;
+using Result;
 using ScriptableObject;
 using UnityEngine;
 using VContainer;
@@ -7,22 +8,39 @@ namespace Player
 {
     public class PlayerManager
     {
+        public Vector3 Position => _player.transform.position;
+        
+        public string Tag => _player.gameObject.tag;
+        
         private readonly GameObject _player;
 
         private bool _canMove = true;
+        
+        private readonly Animator _animator;
 
         private readonly PlatformManager _platformManager;
+        private readonly ResultManager _resultManager;
         
         private readonly PlayerData _playerData;
 
         [Inject]
-        public PlayerManager(SceneResources sceneResources, PlatformManager platformManager, PlayerData playerData)
+        public PlayerManager(SceneResources sceneResources, PlatformManager platformManager, PlayerData playerData, ResultManager resultManager)
         {
             _player = sceneResources.player;
 
             _platformManager = platformManager;
             
             _playerData = playerData;
+
+            _resultManager = resultManager;
+
+            _animator = _player.GetComponentInChildren<Animator>();
+        }
+
+        public void Initialize()
+        {
+            _resultManager.SubscribeToFail(OnFail);
+            _resultManager.SubscribeToSuccess(OnSuccess);
         }
 
         public void Update()
@@ -30,6 +48,16 @@ namespace Player
             if (!_canMove) return;
 
             Move();
+        }
+
+        private void OnFail()
+        {
+            _canMove = false;
+        }
+        private void OnSuccess()
+        {
+            _canMove = false;
+            _animator.SetTrigger("dance");
         }
 
         private void Move()

@@ -32,7 +32,8 @@ namespace Platform
         public void ActivateNext()
         {
             _activePlatformIndex++;
-            
+
+            if (_activePlatformIndex >= _stacks.Length ) return;
             NextStack = _stacks[_activePlatformIndex];
             Place(NextStack);
             StartMoving(NextStack);

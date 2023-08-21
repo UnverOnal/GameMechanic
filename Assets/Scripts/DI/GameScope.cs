@@ -1,5 +1,6 @@
 using Platform;
 using Player;
+using Result;
 using ScriptableObject;
 using UnityEngine;
 using VContainer;
@@ -24,6 +25,7 @@ namespace DI
             builder.Register<PlatformManager>(Lifetime.Singleton);
             builder.Register<InputManager>(Lifetime.Singleton);
             builder.Register<PlayerManager>(Lifetime.Singleton);
+            builder.Register<ResultManager>(Lifetime.Singleton);
         }
     }
 }
