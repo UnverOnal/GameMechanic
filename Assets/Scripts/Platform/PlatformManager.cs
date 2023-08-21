@@ -11,31 +11,26 @@ namespace Platform
     public class PlatformManager
     {
         public event Action OnPerfectTap;
+        public event Action OnNormalTap;
         public Vector3 CurrentPlatformCenter { get; private set; }
-        
-        private readonly GameObject[] _stacks;
 
-        private PlatformMover _platformMover;
-        private readonly InputManager _inputManager;
+        private readonly PlatformMover _platformMover;
         private readonly MeshCutter _meshCutter;
         private readonly ObjectDestroyer _objectDestroyer;
-
-        private readonly PlatformData _platformData;
 
         private Vector3 _startingPosition;
 
         [Inject]
         public PlatformManager(SceneResources sceneResources, InputManager inputManager, PlatformData platformData)
         {
-            _stacks = sceneResources.stacks;
-            _platformData = platformData;
-            
-            _inputManager = inputManager;
-            _inputManager.OnTap += OnTap;
+            var stacks = sceneResources.stacks;
+
+            inputManager.OnTap += OnTap;
             
             _meshCutter = new MeshCutter();
             _objectDestroyer = new ObjectDestroyer(platformData.maximumTrashSize, platformData.delayForDestroyExtraParts);
-            _platformMover = new PlatformMover(_stacks, 1, _platformData.startingPlatformDistance, _platformData.platformMovementDuration);
+            _platformMover = new PlatformMover(stacks, platformData.startingPlatformDistance,
+                platformData.platformMovementDuration, platformData.perfectTapTolerance);
 
             CurrentPlatformCenter = _platformMover.CurrentStack.GetCenter();
         }
@@ -48,7 +43,10 @@ namespace Platform
             if (isCloseEnough)
                 OnPerfectTap?.Invoke();
             else
+            {
                 SlicePlatform(out nextStack);
+                OnNormalTap?.Invoke();
+            }
             
             CurrentPlatformCenter = nextStack.GetCenter();
             _platformMover.ActivateNext();
