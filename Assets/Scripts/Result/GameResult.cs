@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameResource;
 using UnityEngine;
 
 namespace Result
@@ -16,19 +17,6 @@ namespace Result
         }
         
         public abstract void Subscribe(Action action);
-
-        public virtual void Reset()
-        {
-            UnSubscribe();
-        }
         
-        private void UnSubscribe()
-        {
-            for (int i = 0; i < Actions.Count; i++)
-            {
-                var action = Actions[i];
-                ResultChecker.OnCollide -= action;
-            }
-        }
     }
 }

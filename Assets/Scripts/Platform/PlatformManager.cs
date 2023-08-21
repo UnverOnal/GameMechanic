@@ -1,4 +1,5 @@
 using System;
+using GameManagement;
 using GameResource;
 using ScriptableObject;
 using UnityEngine;
@@ -7,7 +8,7 @@ using VContainer;
 
 namespace Platform
 {
-    public class PlatformManager : IDisposable, IReloadable
+    public class PlatformManager
     {
         public event Action OnPerfectTap;
         public Vector3 CurrentPlatformCenter { get; private set; }
@@ -21,6 +22,8 @@ namespace Platform
 
         private readonly PlatformData _platformData;
 
+        private Vector3 _startingPosition;
+
         [Inject]
         public PlatformManager(SceneResources sceneResources, InputManager inputManager, PlatformData platformData)
         {
@@ -28,18 +31,13 @@ namespace Platform
             _platformData = platformData;
             
             _inputManager = inputManager;
-            _meshCutter = new MeshCutter();
-            
-            _objectDestroyer = new ObjectDestroyer(platformData.maximumTrashSize, platformData.delayForDestroyExtraParts);
-        }
-        
-        public void Initialize()
-        {
             _inputManager.OnTap += OnTap;
             
-            CurrentPlatformCenter = _platformMover.CurrentStack.GetCenter();
-
+            _meshCutter = new MeshCutter();
+            _objectDestroyer = new ObjectDestroyer(platformData.maximumTrashSize, platformData.delayForDestroyExtraParts);
             _platformMover = new PlatformMover(_stacks, 1, _platformData.startingPlatformDistance, _platformData.platformMovementDuration);
+
+            CurrentPlatformCenter = _platformMover.CurrentStack.GetCenter();
         }
 
         private void OnTap()
@@ -56,7 +54,7 @@ namespace Platform
             _platformMover.ActivateNext();
         }
 
-        private void SlicePlatform(out GameObject nextStack)    
+        private void SlicePlatform(out GameObject nextStack)
         {
             var currentStackOr = _platformMover.NextStack;
             var previousStack = _platformMover.CurrentStack;
@@ -75,16 +73,6 @@ namespace Platform
             nextStack.AddComponent<BoxCollider>();
 
             _platformMover.SetPrevious(nextStack);
-        }
-
-        public void Dispose()
-        {
-            _inputManager.OnTap -= OnTap;
-        }
-
-        public void Reset()
-        {
-            throw new NotImplementedException();
         }
     }
 }

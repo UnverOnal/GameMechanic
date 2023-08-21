@@ -8,37 +8,23 @@ using VContainer;
 
 namespace Camera
 {
-    public class CameraManager : IReloadable
+    public class CameraManager
     {
-        private readonly ResultManager _resultManager;
-        
         private readonly CinemachineVirtualCamera _followCamera;
         private readonly CinemachineFreeLook _successCamera;
 
-        private CancellationTokenSource _tokenSource;
+        private readonly CancellationTokenSource _tokenSource;
         
         [Inject]
         public CameraManager(SceneResources sceneResources, ResultManager resultManager)
         {
-            _resultManager = resultManager;
-
             var cameraResources = sceneResources.cameraResources;
             _followCamera = cameraResources.followCamera;
             _successCamera = cameraResources.successCamera;
 
             _tokenSource = new CancellationTokenSource();
-        }
-
-        public void Initialize()
-        {
-            _resultManager.SubscribeToSuccess(SetSuccessCamera);
-        }
-
-        public void Reset()
-        {
-            _resultManager.SubscribeToSuccess(SetSuccessCamera);
-            _tokenSource.Cancel();
-            SetFollowCamera();
+            
+            resultManager.SubscribeToSuccess(SetSuccessCamera);
         }
 
         private void SetSuccessCamera()
@@ -47,12 +33,6 @@ namespace Camera
             _followCamera.Priority = 10;
             
             RotateSuccessCamera();
-        }
-
-        private void SetFollowCamera()
-        {
-            _followCamera.Priority = 20;
-            _successCamera.Priority = 10;
         }
 
         private async void RotateSuccessCamera()

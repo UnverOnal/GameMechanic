@@ -1,3 +1,4 @@
+using System;
 using GameResource;
 using Platform;
 using Result;
@@ -7,12 +8,8 @@ using VContainer;
 
 namespace Player
 {
-    public class PlayerManager : IReloadable
+    public class PlayerManager : IDisposable
     {
-        public Vector3 Position => _player.transform.position;
-        
-        public string Tag => _player.gameObject.tag;
-        
         private readonly GameObject _player;
 
         private bool _canMove = true;
@@ -21,32 +18,21 @@ namespace Player
 
         private readonly PlatformManager _platformManager;
         private readonly ResultManager _resultManager;
-        
+
         private readonly PlayerData _playerData;
+        private readonly int _dance = Animator.StringToHash("dance");
 
         [Inject]
         public PlayerManager(SceneResources sceneResources, PlatformManager platformManager, PlayerData playerData, ResultManager resultManager)
         {
             _player = sceneResources.player;
-
             _platformManager = platformManager;
-            
             _playerData = playerData;
+            _animator = _player.GetComponentInChildren<Animator>();
 
             _resultManager = resultManager;
-
-            _animator = _player.GetComponentInChildren<Animator>();
-        }
-
-        public void Initialize()
-        {
             _resultManager.SubscribeToFail(OnFail);
             _resultManager.SubscribeToSuccess(OnSuccess);
-        }
-
-        public void Reset()
-        {
-            throw new System.NotImplementedException();
         }
 
         public void Update()
@@ -63,7 +49,7 @@ namespace Player
         private void OnSuccess()
         {
             _canMove = false;
-            _animator.SetTrigger("dance");
+            _animator.SetTrigger(_dance);
         }
 
         private void Move()
@@ -71,6 +57,12 @@ namespace Player
             var currentStackPosition = _platformManager.CurrentPlatformCenter;
             _player.transform.MoveForward(currentStackPosition,_playerData.playerSpeed);
             _player.transform.Look(currentStackPosition, _playerData.lookRotationFactor);
+        }
+
+        public void Dispose()
+        {
+            _resultManager.UnSubscribeFromFail(OnFail);
+            _resultManager.UnSubscribeFromSuccess(OnSuccess);
         }
     }
 }

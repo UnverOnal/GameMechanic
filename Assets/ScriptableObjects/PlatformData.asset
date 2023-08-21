@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platformMovementDuration: 9.25
   startingPlatformDistance: 10
-  delayForDestroyExtraParts: 2.5
+  delayForDestroyExtraParts: 1
   maximumTrashSize: 10

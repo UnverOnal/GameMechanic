@@ -1,7 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ResultUiResources : MonoBehaviour
+namespace GameResource
 {
-    public GameObject failPage;
-    public GameObject successPage;
+    public class ResultUiResources : MonoBehaviour
+    {
+        public GameObject failPage;
+        public GameObject successPage;
+
+        public Button restartButton;
+        public Button nextButton;
+    }
 }

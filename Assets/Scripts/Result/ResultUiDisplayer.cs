@@ -1,10 +1,11 @@
+using GameResource;
 using UnityEngine;
 
 namespace Result
 {
     public class ResultUiDisplayer
     {
-        private ResultUiResources _uiResources;
+        private readonly ResultUiResources _uiResources;
         
         public ResultUiDisplayer(ResultUiResources uiResources)
         {

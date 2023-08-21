@@ -1,14 +1,26 @@
 using System;
 using UnityEngine;
 
-public class InputManager
+namespace GameManagement
 {
-    public event Action OnTap;
-    private bool IsTapped => Input.GetMouseButtonDown(0);
-
-    public void Update()
+    public class InputManager
     {
-        if(IsTapped)
-            OnTap?.Invoke();
+        public event Action OnTap;
+        private bool IsTapped => Input.GetMouseButtonDown(0);
+
+        private bool _ignore;
+
+        public void Update()
+        {
+            if(_ignore) return;
+        
+            if(IsTapped)
+                OnTap?.Invoke();
+        }
+
+        public void Ignore(bool ignore)
+        {
+            _ignore = ignore;
+        }
     }
 }

@@ -84,8 +84,8 @@ namespace Platform
         
         private bool IsCloseEnough(Transform current, Transform next)
         {
-            var canCut = Math.Abs(current.position.x - next.position.x) < 5f;
-            return canCut;
+            var canCut = Math.Abs(current.position.x - next.position.x) < 0.25f;
+            return false;
         }
     }
 }

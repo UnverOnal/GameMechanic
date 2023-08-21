@@ -1,40 +1,44 @@
 using Audio;
 using Camera;
+using GameResource;
 using Player;
-using Result;
+using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
-public class GameManager : ITickable
+namespace GameManagement
 {
-    private readonly InputManager _inputManager;
-    private readonly PlayerManager _playerManager;
-    private readonly ResultManager _resultManager;
-    private readonly CameraManager _cameraManager;
-    private readonly AudioManager _audioManager;
-    
-    [Inject]
-    public GameManager(InputManager inputManager, PlayerManager playerManager, ResultManager resultManager, CameraManager cameraManager, AudioManager audioManager)
+    public class GameManager : ITickable
     {
-        _inputManager = inputManager;
-        _playerManager = playerManager;
-        _resultManager = resultManager;
-        _cameraManager = cameraManager;
-        _audioManager = audioManager;
+        private readonly InputManager _inputManager;
+        private readonly PlayerManager _playerManager;
+        private readonly CameraManager _cameraManager;
+        private readonly AudioManager _audioManager;
 
-        NextScene();
-    }
+        [Inject]
+        public GameManager(InputManager inputManager, PlayerManager playerManager,
+            CameraManager cameraManager, AudioManager audioManager, SceneResources sceneResources)
+        {
+            _inputManager = inputManager;
+            _playerManager = playerManager;
+            _cameraManager = cameraManager;
+            _audioManager = audioManager;
 
-    public void Tick()
-    {
-        _inputManager.Update();
-        _playerManager.Update();
-    }
+            var restartButton = sceneResources.resultUiResources.restartButton;
+            restartButton.onClick.AddListener(LoadScene);
+            var nextButton = sceneResources.resultUiResources.nextButton;
+            nextButton.onClick.AddListener(LoadScene);
+        }
 
-    private void NextScene()
-    {
-        _resultManager.Initialize();
-        _playerManager.Initialize();
-        _cameraManager.Initialize();
+        public void Tick()
+        {
+            _inputManager.Update();
+            _playerManager.Update();
+        }
+
+        private void LoadScene()
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }

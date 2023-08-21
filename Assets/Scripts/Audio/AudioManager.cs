@@ -6,13 +6,10 @@ using VContainer;
 
 namespace Audio
 {
-    public class AudioManager : IReloadable
+    public class AudioManager
     {
         private readonly AudioSource _audioSource;
 
-        private readonly PlatformManager _platformManager;
-
-        private readonly float _defaultPitch;
         private float _pitch;
 
         [Inject]
@@ -20,20 +17,8 @@ namespace Audio
         {
             _audioSource = sceneResources.audioHolder.GetComponent<AudioSource>();
             _pitch = _audioSource.pitch;
-            _defaultPitch = _pitch;
 
-                _platformManager = platformManager;
-        }
-
-        public void Initialize()
-        {
-            _platformManager.OnPerfectTap += PlayTapSound;
-        }
-
-        public void Reset()
-        {
-            _pitch = _defaultPitch;
-            _platformManager.OnPerfectTap -= PlayTapSound;
+            platformManager.OnPerfectTap += PlayTapSound;
         }
 
         private void PlayTapSound()

@@ -3474,7 +3474,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749635891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4148,6 +4148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   failPage: {fileID: 615172067}
   successPage: {fileID: 1734711122}
+  restartButton: {fileID: 1750027279}
+  nextButton: {fileID: 1344684818}
 --- !u!1 &938012663
 GameObject:
   m_ObjectHideFlags: 0
@@ -12094,6 +12096,10 @@ PrefabInstance:
     - target: {fileID: 4978699718255468484, guid: 8ebf841af362818409cf000d8f1a2345, type: 3}
       propertyPath: m_Name
       value: Chibi
+      objectReference: {fileID: 0}
+    - target: {fileID: 4978699718255468484, guid: 8ebf841af362818409cf000d8f1a2345, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5646447060418037118, guid: 8ebf841af362818409cf000d8f1a2345, type: 3}
       propertyPath: m_RootOrder
